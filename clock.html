@@ -1,0 +1,98 @@
+<html>
+	<head>
+		<!--
+		****************************************************************
+		* This code is the intellectual property of Tristan Anastas    *
+		* and is considered a trade secret. All rights Reserved. The   *
+		* use of, or replication of this program is prohibited without *
+		* writen consent from Tristan Anastas.                         *
+        *                                                              *
+        * But feel free to read the code!!!                            *
+		****************************************************************
+		-->
+	<title>BINARY CLOCK</title>
+	</head>
+	<body>
+		<div align="center">
+			<H1>Binary Clock</H1>
+			<p>This uses the HTML5 canvas element. Produced by Fetal_Pig</p>
+			<canvas id='myCanvas' height='200' width='300'>
+				Sorry the HTML5 canvas element is not Supported for your browser.
+			</canvas>
+		</div>
+		<script>
+			var c=document.getElementById("myCanvas");
+			var ctx=c.getContext("2d");
+			var time = {};
+			var circle = {};
+			circle.second = {};
+			circle.minute = {};
+			circle.hour = {};
+			ctx.fillStyle = "red";
+			ctx.rect(0,0,c.width,c.height);
+			ctx.fill();	
+			var check = 0;
+
+			draw();
+
+			function drawCircle(x,y,fill) { 
+				ctx.beginPath();
+				ctx.fillStyle = "black"
+				ctx.arc(x, y, 10, 0, Math.PI*2, true);   
+				if(fill){
+					ctx.fill();
+				}else{
+					ctx.stroke();
+				}
+				ctx.closePath();   
+			}
+			
+			function drawBin(){
+				var pos_x = 250;
+				var pos_y = 150;
+				var fill = false;
+				for(var ii=2;ii>=0;ii--){
+					for(var bb = (time.bin[ii].length-1);bb>=0;bb--){
+						if(time.bin[ii][bb] === "1"){
+							fill = true;
+						}else{
+							fill = false;
+						}
+						drawCircle(pos_x,pos_y,fill);
+						pos_x -= 25; 
+					}
+					pos_x = 250;
+					pos_y -= 50;
+				}
+			}
+
+			function draw(){
+				getTime();
+				ctx.fillStyle = "red";
+				ctx.rect(0,0,c.width,c.height);
+				ctx.fill();	
+			
+				drawBin();		
+			
+				ctx.fillText(time.hour + " Hours",30,50);
+				ctx.fillText(time.minute + " Minutes",30,100);
+				ctx.fillText(time.second + " Seconds",30,150);
+
+
+				setTimeout(function(){draw();},1000);
+			}
+
+			function getTime(){
+				var d = new Date;
+				time.bin = {};			
+				time.hour = d.getHours();
+				time.bin[0] = time.hour.toString(2);
+				time.minute = d.getMinutes();
+				time.bin[1] = time.minute.toString(2);
+				time.second = d.getSeconds();
+				time.bin[2] = time.second.toString(2);
+			}
+		
+		</script>
+	</body>
+</html>
